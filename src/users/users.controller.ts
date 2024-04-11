@@ -1,6 +1,8 @@
-import {Controller, Header, HttpCode, HttpStatus, Post, Body} from '@nestjs/common';
+import {Controller, Header, HttpCode, HttpStatus, Get, Post, Body, Request, UseGuards} from '@nestjs/common';
 import {UsersService} from "./users.service";
 import {CreateUserDto} from "./dto/create-user.dto";
+import {LocalAuthGuard} from "../auth/local.auth.guard";
+import {AuthenticatedGuard} from "../auth/authenticated.guard";
 
 @Controller('users')
 export class UsersController {
@@ -10,8 +12,26 @@ export class UsersController {
 
   @Post('signup')
   @HttpCode(HttpStatus.CREATED)
-  @Header('Content-type', 'application/json')
   createUser(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto)
+  }
+
+  @Post('login')
+  @UseGuards(LocalAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  login(@Request() request) {
+    return { user: request.user, msg: 'Logged in' }
+  }
+
+  @Get('login-check')
+  @UseGuards(AuthenticatedGuard)
+  loginCheck(@Request() request) {
+    return request.user
+  }
+
+  @Get('logout')
+  logout(@Request() request) {
+    request.session.destroy();
+    return { mgs: 'Session has ended' }
   }
 }
