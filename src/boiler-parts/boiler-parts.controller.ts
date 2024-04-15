@@ -23,9 +23,9 @@ export class BoilerPartsController {
 
   @ApiOkResponse({ type: FindOneResponse }) // for Swagger
   @UseGuards(AuthenticatedGuard)
-  @Get('find/:id')
-  getOne(@Param('id') id:string) {
-    return this.boilerPartsService.findOne(id);
+  @Get('find/:id') // boiler part id
+  getOne(@Param('id') boilerPartId:string) {
+    return this.boilerPartsService.findOne(boilerPartId);
   }
 
   @ApiOkResponse({ type: GetBestsellersResponse }) // for Swagger
@@ -43,7 +43,7 @@ export class BoilerPartsController {
   }
 
   @ApiOkResponse({ type: SearchResponse }) // for Swagger
-  @ApiBody({ type: SearchRequest })
+  @ApiBody({ type: SearchRequest }) // for Swagger
   @UseGuards(AuthenticatedGuard)
   @Post('search')
   search(@Body() { search }: { search: string }) {
@@ -51,7 +51,7 @@ export class BoilerPartsController {
   }
 
   @ApiOkResponse({ type: SearchByNameResponse }) // for Swagger
-  @ApiBody({ type: SearchByNameRequest })
+  @ApiBody({ type: SearchByNameRequest }) // for Swagger
   @UseGuards(AuthenticatedGuard)
   @Post('name')
   searchByName(@Body() { name }: { name: string }) {
