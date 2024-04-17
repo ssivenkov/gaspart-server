@@ -39,6 +39,6 @@ export class UsersController {
   @Get('logout')
   logout(@Request() request) {
     request.session.destroy();
-    return { mgs: 'Session has ended' }
+    return { msg: 'Session has ended' }
   }
 }
