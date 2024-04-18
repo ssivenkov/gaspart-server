@@ -3,6 +3,7 @@ import * as passport from 'passport';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
+import * as process from "process";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -13,6 +14,11 @@ async function bootstrap() {
   }));
   app.use(passport.initialize());
   app.use(passport.session());
+
+  app.enableCors({
+    credentials: true,
+    origin: [process.env.CORS_ORIGIN],
+  });
 
   const config = new DocumentBuilder()
     .setTitle('Аква термикс')
